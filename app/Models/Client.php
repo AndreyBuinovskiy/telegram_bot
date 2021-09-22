@@ -48,7 +48,7 @@ class Client extends Model
     use HasFactory;
 
     protected $fillable = [
-        'external-id',
+        'external_id',
         'email',
         'phone_number',
         'username',
@@ -57,10 +57,16 @@ class Client extends Model
         'last_name',
         'clients_id',
         'chat_id',
+        'image_path',
     ];
 
     public function tags()
     {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function message()
+    {
+        return $this->hasMany(Message::class);
     }
 }

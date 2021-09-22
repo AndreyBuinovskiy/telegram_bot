@@ -21,8 +21,9 @@ class CreateModelsClientsTable extends Migration
             $table->string('last_name')->nullable();
             $table->string('clients_id')->nullable();
             $table->string('chat_id')->nullable();
-            $table->bigInteger('phone_number')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('email')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

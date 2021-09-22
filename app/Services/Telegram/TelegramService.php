@@ -40,6 +40,16 @@ class TelegramService implements BotInterface
 //            'text' => 'Ели пали',
 //            'reply_markup' => $keyboard
 //        ];
-        $this->api->sendMessage($params);
+       return $this->api->sendMessage($params);
+    }
+
+    public function getUserProfilePhotos(array $params)
+    {
+        return $this->api->getUserProfilePhotos($params);
+    }
+
+    public function getFile(array $params)
+    {
+        return $this->api->getFile($params);
     }
 }

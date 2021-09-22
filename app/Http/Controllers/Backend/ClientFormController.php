@@ -16,6 +16,6 @@ class ClientFormController extends Controller
             $request->input('email') ?? ''
         );
 
-        return redirect()->away("https://t.me/DmitriiKalinskiiBot?start=".$return->getAttributes()['external-id']);
+        return redirect()->away("https://t.me/DmitriiKalinskiiBot?start=".$return->getAttributes()['external_id']);
     }
 }

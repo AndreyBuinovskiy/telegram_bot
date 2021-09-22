@@ -26,6 +26,16 @@ Route::middleware(['auth'])->prefix('admin')->namespace('Backend')->name('admin.
     Route::post('/setting/getwebhookinfo', [\App\Http\Controllers\Backend\SettingController::class, 'getWebHookInfo'])->name('setting.getwebhookinfo');
 });
 
+//апи для получения данных о клиенте(НАУЧИТСЯ ДЕЛАТЬ ЧЕРЕЗ АПИ ЛАРАВЕЛЯ И ПЕРЕДЕЛАТЬ)
+Route::prefix('clients')->group(function () {
+    Route::get('/{clients_id}', [\App\Http\Controllers\Api\ApiClientsController::class, 'get']);
+});
+
+//Отправка сообщения с бабл в телеграм
+Route::prefix('/message')->group(function () {
+    Route::get('/send-message', [\App\Http\Controllers\Api\ApiMessageController::class, 'send']);
+});
+
 //обработка формы на главной странице
 Route::post('/create-clients', [\App\Http\Controllers\Backend\ClientFormController::class, 'createClients'])->name('setting.createClients');
 

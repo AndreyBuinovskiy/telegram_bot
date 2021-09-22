@@ -39,7 +39,8 @@ class ClientsRepository extends AbstractRepository
         string $clientsId,
         string $firstName,
         string $lastName,
-        string $userName
+        string $userName,
+        string $imagePath
     ): Client
     {
 
@@ -49,8 +50,14 @@ class ClientsRepository extends AbstractRepository
             'username' => $userName,
             'clients_id' => $clientsId,
             'chat_id' => $chatId,
+            'image_path' => $imagePath,
         ];
 
-        return $this->entity->updateOrCreate(['external-id' => $externalId], $values);
+        return $this->entity->updateOrCreate(['external_id' => $externalId], $values);
+    }
+
+    public function getClient(string $externalId): Client
+    {
+        return $this->entity->firstWhere(['external_id' => $externalId]);
     }
 }
