@@ -14,19 +14,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('register_clients');
 });
 
 Route::middleware(['auth'])->prefix('admin')->namespace('Backend')->name('admin.')->group(function () {
-    Route::get('/', '\App\Http\Controllers\Backend\DashboardController@index')->name('index');
-
-    Route::get('/setting', '\App\Http\Controllers\Backend\SettingController@index')->name('setting.index');
-    Route::post('/setting/store', '\App\Http\Controllers\Backend\SettingController@store')->name('setting.store');
-    Route::post('/setting/setwebhook', '\App\Http\Controllers\Backend\SettingController@setWebHook')->name('setting.setwebhook');
-    Route::post('/setting/getwebhookinfo', '\App\Http\Controllers\Backend\SettingController@getWebHookInfo')->name('setting.getwebhookinfo');
+    Route::get('/', [\App\Http\Controllers\Backend\DashboardController::class, 'index'])->name('index');
+    //форма для постановки вебхука в телеграм
+    Route::get('/setting', [\App\Http\Controllers\Backend\SettingController::class, 'index'])->name('setting.index');
+    Route::post('/setting/store', [\App\Http\Controllers\Backend\SettingController::class, 'store'])->name('setting.store');
+    Route::post('/setting/setwebhook', [\App\Http\Controllers\Backend\SettingController::class, 'setWebHook'])->name('setting.setwebhook');
+    Route::post('/setting/getwebhookinfo', [\App\Http\Controllers\Backend\SettingController::class, 'getWebHookInfo'])->name('setting.getwebhookinfo');
 });
 
-Route::get('get-me', '\App\Http\Controllers\TelegramController@getMe');
+//апи для получения данных о клиенте(НАУЧИТСЯ ДЕЛАТЬ ЧЕРЕЗ АПИ ЛАРАВЕЛЯ И ПЕРЕДЕЛАТЬ)
+Route::prefix('clients')->group(function () {
+    Route::get('/{clients_id}', [\App\Http\Controllers\Api\ApiClientsController::class, 'get']);
+});
+
+//Отправка сообщения с бабл в телеграм
+Route::prefix('/message')->group(function () {
+    Route::get('/send-message', [\App\Http\Controllers\Api\ApiMessageController::class, 'send']);
+});
+
+//обработка формы на главной странице
+Route::post('/create-clients', [\App\Http\Controllers\Backend\ClientFormController::class, 'createClients'])->name('setting.createClients');
+
+//обработка вебхука с телеграма
+Route::post('/webhooks/telegram/' . env('TELEGRAM_BOT_TOKEN'), [\App\Http\Controllers\Webhooks\TelegramController::class, 'proces']);
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Setting;
-use Telegram\Bot;
-use Telegram\Bot\Laravel;
+use App\Repositories\ClientsRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -49,6 +48,6 @@ class SettingController extends Controller
     {
         $client = new \GuzzleHttp\Client(['base_uri' => 'https://api.telegram.org/bot' . env('TELEGRAM_BOT_TOKEN') . '/']);
         $result = $client->request($method, $route, $params);
-        return (string)$result->getBody();
+        return (string) $result->getBody();
     }
 }
