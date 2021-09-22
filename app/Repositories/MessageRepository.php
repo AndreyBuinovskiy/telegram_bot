@@ -11,11 +11,11 @@ class MessageRepository extends AbstractRepository
         parent::__construct($message);
     }
 
-    public function store(string $clientExtrernalId, string $manadger, string $message): Message
+    public function store(string $clientExtrernalId, string $manager, string $message): Message
     {
         $values = [
             'client' => $clientExtrernalId,
-            'manager' => $manadger,
+            'user' => $manager,
             'message' => $message
         ];
 

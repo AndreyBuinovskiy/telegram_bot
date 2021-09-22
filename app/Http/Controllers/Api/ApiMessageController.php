@@ -11,34 +11,39 @@ use Illuminate\Support\Facades\Log;
 
 class ApiMessageController
 {
-    public function send(Request $request, MessageRepository $messageStore, ClientsRepository $client){
-        $message = $messageStore->store(
+    private MessageRepository $messageStore;
+    private ClientsRepository $client;
+    private TelegramService $service;
+
+    public function __construct(MessageRepository $messageStore, ClientsRepository $client, TelegramService $service)
+    {
+        $this->messageStore = $messageStore;
+        $this->client = $client;
+        $this->service = $service;
+    }
+
+    public function send(Request $request){
+
+        $message = $this->messageStore->store(
             $request->clientExternalId,
-            $request->menedgerName,
+            $request->managerName,
             $request->message
         );
 
-        $client = $client->getClient($message->client);
+        $client = $this->client->getClient($message->client);
 
-        if (!empty($client)) {
+        if (empty($client)) {
             return ['success'=> false];
         }
 
         $paramsMessage = [
-            'chat_id' => $client->getClient($message->client)->chat_id,
+            'chat_id' => $client->chat_id,
             'text' => $message->message,
         ];
 
-        $messageSend = $this->sendMessage($paramsMessage);
+        $messageSend = $this->service->sendMessage($paramsMessage);
 
         return $messageSend;
     }
-
-    private function sendMessage(array $paramsMessage, TelegramService $service){
-
-        return $service->sendMessage($paramsMessage);
-
-    }
-
 
 }

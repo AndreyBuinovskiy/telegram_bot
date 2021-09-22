@@ -11,7 +11,7 @@ class Message extends Model
 
     protected $fillable = [
         'client',
-        'manager',
+        'user',
         'message',
     ];
 
